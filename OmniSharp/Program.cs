@@ -3,6 +3,7 @@ using System.IO;
 using System.Threading;
 using NDesk.Options;
 using Nancy.Hosting.Self;
+using OmniSharp.PlatformUtilities;
 using OmniSharp.Solution;
 
 namespace OmniSharp
@@ -61,9 +62,11 @@ namespace OmniSharp
 
             try
             {
-                using (new FileStream(lockfile, FileMode.OpenOrCreate, FileAccess.Read, FileShare.None))
+                using (var platformLock = PlatformLockFactory.GetPlatformLock())
                 {
+                    platformLock.Lock(lockfile);
                     var solution = new CSharpSolution(solutionPath);
+                    Console.WriteLine("Solution loaded.");
                     Console.CancelKeyPress +=
                         (sender, e) =>
                             {

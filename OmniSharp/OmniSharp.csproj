@@ -92,6 +92,10 @@
     <Reference Include="Mono.Cecil.Rocks">
       <HintPath>..\packages\Mono.Cecil.0.9.5.4\lib\net40\Mono.Cecil.Rocks.dll</HintPath>
     </Reference>
+    <Reference Include="Mono.Posix, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Mono.Posix.dll</HintPath>
+    </Reference>
     <Reference Include="Nancy, Version=0.16.1.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Nancy.0.16.1\lib\net40\Nancy.dll</HintPath>
@@ -108,6 +112,9 @@
   <ItemGroup>
     <Compile Include="Build\BuildCommandBuilder.cs" />
     <Compile Include="Build\BuildCommandModule.cs" />
+    <Compile Include="PlatformUtilities\PlatformLock.cs" />
+    <Compile Include="PlatformUtilities\PlatformLockFactory.cs" />
+    <Compile Include="PlatformUtilities\PlatformService.cs" />
     <Compile Include="ProjectManipulation\AddReference\AddFileReferenceProcessor.cs" />
     <Compile Include="ProjectManipulation\AddReference\AddGacReferenceProcessor.cs" />
     <Compile Include="ProjectManipulation\AddReference\AddProjectReferenceProcessor.cs" />
@@ -201,6 +208,8 @@
     <Compile Include="TypeLookup\TypeLookupResponse.cs" />
     <Compile Include="TypeLookup\TypeLookupModule.cs" />
     <Compile Include="TypeLookup\TypeLookupRequest.cs" />
+    <Compile Include="PlatformUtilities\UnixLock.cs" />
+    <Compile Include="PlatformUtilities\WindowsLock.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -214,6 +223,7 @@
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!--<Import Project="$(SolutionDir)\.nuget\NuGet.targets" />-->
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

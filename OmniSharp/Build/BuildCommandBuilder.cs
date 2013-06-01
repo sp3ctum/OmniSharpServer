@@ -1,5 +1,5 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
+using OmniSharp.PlatformUtilities;
 using OmniSharp.Solution;
 
 namespace OmniSharp.Build
@@ -7,14 +7,6 @@ namespace OmniSharp.Build
     public class BuildCommandBuilder
     {
         private readonly ISolution _solution;
-        private static bool IsUnix
-        {
-            get
-            {
-                var p = (int)Environment.OSVersion.Platform;
-                return (p == 4) || (p == 6) || (p == 128);
-            }
-        }
 
         public BuildCommandBuilder(ISolution solution)
         {
@@ -25,7 +17,7 @@ namespace OmniSharp.Build
         {
             get
             {
-                return IsUnix
+                return PlatformService.IsUnix
                            ? "xbuild"
                            : Path.Combine(System.Runtime.InteropServices.RuntimeEnvironment.GetRuntimeDirectory(), "Msbuild.exe");
             }
@@ -33,7 +25,7 @@ namespace OmniSharp.Build
 
         public string Arguments
         {
-            get { return IsUnix ? "" : "/m " + "/nologo /v:q /property:GenerateFullPaths=true \"" + _solution.FileName + "\""; }
+            get { return PlatformService.IsUnix ? "" : "/m " + "/nologo /v:q /property:GenerateFullPaths=true \"" + _solution.FileName + "\""; }
         }
     }
 }
