@@ -66,6 +66,12 @@ namespace OmniSharp.Common
 
         public static QuickFix ForNonBodyRegion
             (IMember member, IDocument document) {
+            return ForNonBodyRegion
+                (member.UnresolvedMember, document);
+        }
+
+        public static QuickFix ForNonBodyRegion
+            (IUnresolvedMember member, IDocument document) {
             var text = GetNonBodyRegion
                 (member.Region, document, member.BodyRegion);
             return new QuickFix
@@ -73,6 +79,34 @@ namespace OmniSharp.Common
                 , Line     = member.Region.BeginLine
                 , Column   = member.Region.BeginColumn
                 , Text     = text};
+        }
+
+        public static QuickFix ForNonBodyRegion
+            ( IMember   member
+            , IDocument document
+            , string    additionalTextToAdd
+            , bool      addAdditionalTextToStart = true) {
+            return ForNonBodyRegion
+                ( member.UnresolvedMember
+                , document
+                , additionalTextToAdd
+                , addAdditionalTextToStart);
+        }
+
+        public static QuickFix ForNonBodyRegion
+            ( IUnresolvedMember member
+            , IDocument         document
+            , string            additionalTextToAdd
+            , bool              addAdditionalTextToStart = true) {
+            var qf = ForNonBodyRegion(member, document);
+            var text = GetNonBodyRegion(member.Region, document, member.BodyRegion);
+
+            if (addAdditionalTextToStart)
+                qf.Text = additionalTextToAdd + text;
+            else
+                qf.Text = text + additionalTextToAdd;
+
+            return qf;
         }
 
         static string GetNonBodyRegion
